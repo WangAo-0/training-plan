@@ -1,0 +1,1 @@
+Header guards and #pragma oncehttps://www.learncpp.com/cpp-tutorial/header-guards/

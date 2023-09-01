@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/oliver/Developer/bPlusProject/build",
-  "command": "/usr/bin/g++   -I../include  -g   -o src/CMakeFiles/main.dir/Main.cpp.o -c /home/oliver/Developer/bPlusProject/src/Main.cpp",
-  "file": "/home/oliver/Developer/bPlusProject/src/Main.cpp"
-}
-]

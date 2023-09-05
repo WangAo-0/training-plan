@@ -75,6 +75,12 @@ class BPlusTree {
 
         // 将元素按顺序插入
         LeafNode<KeyType> *leafNode = insertElement(key, value, temp);
+        int deteleNum = 0;
+        if ((MAX_KEYS + 1) % 2 == 0) {
+          deteleNum = (MAX_KEYS + 1) / 2;
+        } else {
+          deteleNum = (MAX_KEYS + 1) / 2 + 1;
+        }
 
         // 大于M个则开始分裂
         if (leafNode->keys.size() > MAX_KEYS) {
@@ -85,27 +91,23 @@ class BPlusTree {
           if (parent == nullptr) {  // 非叶根节点至少有两个元素
             // 创建新父节点
             InternalNode<KeyType> *newRoot = new InternalNode<KeyType>();
-            newRoot->keys.push_back(leafNode->keys[(MAX_KEYS + 1) / 2]);
+            newRoot->keys.push_back(leafNode->keys[deteleNum - 1]);
             newRoot->children.push_back(leafNode);
-            newRoot->keys.push_back(leafNode->keys[MAX_KEYS]);
+            newRoot->keys.push_back(leafNode->keys.back());
             newRoot->children.push_back(rightNode);
             root = newRoot;
 
             // 删除左子树的多余的元素
-            leafNode->keys.erase(
-                leafNode->keys.begin() + (MAX_KEYS + 1) / 2 + 1,
-                leafNode->keys.end());
-            leafNode->values.erase(
-                leafNode->values.begin() + (MAX_KEYS + 1) / 2 + 1,
-                leafNode->values.end());
+            leafNode->keys.erase(leafNode->keys.begin() + deteleNum,
+                                 leafNode->keys.end());
+            leafNode->values.erase(leafNode->values.begin() + deteleNum,
+                                   leafNode->values.end());
           } else {
             // 删除左子树多余元素
-            leafNode->keys.erase(
-                leafNode->keys.begin() + (MAX_KEYS + 1) / 2 + 1,
-                leafNode->keys.end());
-            leafNode->values.erase(
-                leafNode->values.begin() + (MAX_KEYS + 1) / 2 + 1,
-                leafNode->values.end());
+            leafNode->keys.erase(leafNode->keys.begin() + deteleNum,
+                                 leafNode->keys.end());
+            leafNode->values.erase(leafNode->values.begin() + deteleNum,
+                                   leafNode->values.end());
 
             // 父节点更新节点元素
             static_cast<InternalNode<KeyType> *>(parent)->children.insert(
@@ -144,12 +146,16 @@ class BPlusTree {
 
   InternalNode<KeyType> *createRightInternalNode(
       const InternalNode<KeyType> *parentNode) const {
+    int deteleNum = 0;
+    if ((MAX_KEYS + 1) % 2 == 0) {
+      deteleNum = (MAX_KEYS + 1) / 2;
+    } else {
+      deteleNum = (MAX_KEYS + 1) / 2 + 1;
+    }
     decltype(BPlusTreeNode<KeyType>::keys) rightKey(
-        parentNode->keys.begin() + (MAX_KEYS + 1) / 2 + 1,
-        parentNode->keys.end());
+        parentNode->keys.begin() + deteleNum, parentNode->keys.end());
     decltype(InternalNode<KeyType>::children) rightChildren(
-        parentNode->children.begin() + (MAX_KEYS + 1) / 2 + 1,
-        parentNode->children.end());
+        parentNode->children.begin() + deteleNum, parentNode->children.end());
     InternalNode<KeyType> *rightNode = new InternalNode<KeyType>();
     rightNode->keys = rightKey;
     rightNode->children = rightChildren;
@@ -158,11 +164,16 @@ class BPlusTree {
 
   LeafNode<KeyType> *createRightLeafNode(
       const LeafNode<KeyType> *leafNode) const {
+    int deteleNum = 0;
+    if ((MAX_KEYS + 1) % 2 == 0) {
+      deteleNum = (MAX_KEYS + 1) / 2;
+    } else {
+      deteleNum = (MAX_KEYS + 1) / 2 + 1;
+    }
     decltype(BPlusTreeNode<KeyType>::keys) rightKey(
-        leafNode->keys.begin() + (MAX_KEYS + 1) / 2 + 1, leafNode->keys.end());
+        leafNode->keys.begin() + deteleNum, leafNode->keys.end());
     decltype(LeafNode<KeyType>::values) rightValues(
-        leafNode->values.begin() + (MAX_KEYS + 1) / 2 + 1,
-        leafNode->values.end());
+        leafNode->values.begin() + deteleNum, leafNode->values.end());
     LeafNode<KeyType> *rightNode = new LeafNode<KeyType>();
     rightNode->keys = rightKey;
     rightNode->values = rightValues;
@@ -191,34 +202,38 @@ class BPlusTree {
 
   void splitInternalNode(BPlusTreeNode<KeyType> *parent, int pos,
                          BPlusTreeNode<KeyType> *&temp) {
+    int deteleNum = 0;
+    if ((MAX_KEYS + 1) % 2 == 0) {
+      deteleNum = (MAX_KEYS + 1) / 2;
+    } else {
+      deteleNum = (MAX_KEYS + 1) / 2 + 1;
+    }
     if (parent == nullptr) {
       auto parentNode = static_cast<InternalNode<KeyType> *>(temp);
       InternalNode<KeyType> *rightNode = createRightInternalNode(parentNode);
 
       InternalNode<KeyType> *newRoot = new InternalNode<KeyType>();
-      newRoot->keys.push_back(parentNode->keys[(MAX_KEYS + 1) / 2]);
+      newRoot->keys.push_back(parentNode->keys[deteleNum - 1]);
       newRoot->children.push_back(temp);
-      newRoot->keys.push_back(parentNode->keys[MAX_KEYS]);  // 这里就是最后的
+      newRoot->keys.push_back(parentNode->keys.back());  // 这里就是最后的
       newRoot->children.push_back(rightNode);
       temp = newRoot;
+
       // 删除之前左子树的后面几个元素
-      parentNode->keys.erase(parentNode->keys.begin() + (MAX_KEYS + 1) / 2 + 1,
+      parentNode->keys.erase(parentNode->keys.begin() + deteleNum,
                              parentNode->keys.end());
-      parentNode->children.erase(
-          parentNode->children.begin() + (MAX_KEYS + 1) / 2 + 1,
-          parentNode->children.end());
+      parentNode->children.erase(parentNode->children.begin() + deteleNum,
+                                 parentNode->children.end());
     } else {
       auto parentNode = static_cast<InternalNode<KeyType> *>(parent);
       InternalNode<KeyType> *rightNode =
           createRightInternalNode(static_cast<InternalNode<KeyType> *>(temp));
 
       // 删除之前左子树的后面几个元素
-      temp->keys.erase(temp->keys.begin() + (MAX_KEYS + 1) / 2 + 1,
-                       temp->keys.end());
+      temp->keys.erase(temp->keys.begin() + deteleNum, temp->keys.end());
       auto tempNode = static_cast<InternalNode<KeyType> *>(temp);
-      tempNode->children.erase(
-          tempNode->children.begin() + (MAX_KEYS + 1) / 2 + 1,
-          tempNode->children.end());
+      tempNode->children.erase(tempNode->children.begin() + deteleNum,
+                               tempNode->children.end());
 
       // 父节点插入新增元素
       parentNode->keys.erase(parentNode->keys.begin() + pos);
@@ -251,11 +266,17 @@ class BPlusTree {
             for (int i = 0; i < interNode->keys.size(); ++i) {
               queue.push(interNode->children[i]);
             }
+          } else {
+            auto leafNode = static_cast<LeafNode<KeyType> *>(temp);
+            leafNode->pre->next = nullptr;
+            leafNode->next = nullptr;
           }
           delete temp;
+          temp = nullptr;
         }
       }
       delete start;
+      start = nullptr;
     }
   }
 
@@ -287,6 +308,15 @@ class BPlusTree {
                              KeyType key) {
     auto index = static_cast<LeafNode<KeyType> *>(root);
     if (parent == nullptr) {  // 叶根节点，不处理
+      if (index->keys.size() == 0) {
+        index->pre->next = nullptr;
+        index->pre = nullptr;
+
+        delete index;
+        root = nullptr;
+        index = nullptr;
+        return;
+      }
       return;
     }
 
@@ -868,8 +898,18 @@ class BPlusTree {
   }
 };
 
-void createTestInt1(BPlusTree<int> *intTree);
-void createTestInt2(BPlusTree<int> *intTree);
-void createTestString1(BPlusTree<std::string> *StringTree);
-void createTestString2(BPlusTree<std::string> *StringTree);
-bool checkNotCreate(BPlusTree<int> *root);
+void createTestInt1(BPlusTree<int> *&intTree);
+void createTestInt2(BPlusTree<int> *&intTree);
+void createTestString1(BPlusTree<std::string> *&StringTree);
+void createTestString2(BPlusTree<std::string> *&StringTree);
+bool checkNotCreate(BPlusTree<int> *start);
+void create_bplus_tree_man(BPlusTree<int> *&intTree);
+void create_bplus_tree_auto(BPlusTree<int> *&intTree);
+void printTree(BPlusTree<int> *intTree);
+void deleteNode(BPlusTree<int> *&intTree, std::vector<uint64_t> vec);
+void searchRange(BPlusTree<int> *intTree);
+void optimisedSearch(BPlusTree<int> *intTree);
+void insert_one_billion(BPlusTree<int> *&intTree);
+void deleteTree(BPlusTree<int> *&intTree);
+void insertNode(BPlusTree<int> *&intTree);
+bool checkNotCreate(BPlusTree<int> *initTree);

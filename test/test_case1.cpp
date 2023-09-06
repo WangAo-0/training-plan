@@ -1,13 +1,36 @@
-#include "Bplus.h"
+#include "BPlusFunc.h"
 #include "gtest/gtest.h"
 
-TEST(_test_insert_10000000, create_insert) {
+TEST(_search_key, avg_time) {
   BPlusTree<int>* intTree = new BPlusTree<int>;
-  insert_one_billion(intTree);
+  UserOperation<int>* op = new UserOperation<int>();
+  op->insertTenMillionAuto(intTree);
+  srand(time(0));
+
+  time_t start = 0;
+  time_t end = 0;
+  std::cout << "查询测试开始！" << std::endl;
+  start = time(NULL);
+  for (int i = 0; i < 10000000; i++) {
+    int r = op->getRand(1, 10000000);
+    EXPECT_EQ(intTree->optimizedSearchTestUnique(r), r * 2);
+  }
+  end = time(NULL);
+  std::cout << "查询耗时 :" << end - start << std::endl;
+  op->deleteTree(intTree);
 }
 
-TEST(_test_delete_10000000, delete_insert) {
+TEST(DISABLED__test_insert_10000000, create_insert) {
   BPlusTree<int>* intTree = new BPlusTree<int>;
-  insert_one_billion(intTree);
-  deleteTree(intTree);
+  UserOperation<int>* op = new UserOperation<int>();
+  op->insertTenMillionAuto(intTree);
 }
+
+TEST(DISABLED__test_delete_10000000, delete_insert) {
+  BPlusTree<int>* intTree = new BPlusTree<int>;
+  UserOperation<int>* op = new UserOperation<int>();
+  op->insertTenMillionAuto(intTree);
+  op->deleteTree(intTree);
+}
+
+// 左闭右闭区间

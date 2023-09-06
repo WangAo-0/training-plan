@@ -23,7 +23,6 @@ target_link_libraries(test_main
     gtest
     gtest_main
     pthread
-    bPlusFunc
 )
 
 

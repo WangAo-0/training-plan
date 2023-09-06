@@ -5,11 +5,12 @@
 #include <ostream>
 #include <vector>
 
-#include "Bplus.h"
+#include "BPlusFunc.h"
 
 int main() {
-  BPlusTree<int> *intTree = nullptr;
+  BPlusTree<int>* intTree = nullptr;
   std::vector<uint64_t> vec;
+  UserOperation<int>* op = nullptr;
   while (true) {
     std::cout << "-------------------------------" << std::endl;
     std::cout << "Welcome to use B+ tree!" << std::endl;
@@ -31,10 +32,10 @@ int main() {
 
     switch (funcNum) {
       case 1:
-        create_bplus_tree_man(intTree);
+        op->createBPlusTreeMan(intTree);
         break;
       case 2:
-        create_bplus_tree_auto(intTree);
+        op->createBPlustTreeAuto(intTree);
         break;
       case 3:
         std::cout << "sorry, the func is not avaliable." << std::endl;
@@ -43,10 +44,10 @@ int main() {
         std::cout << "sorry, the func is not avaliable." << std::endl;
         break;
       case 5:
-        printTree(intTree);
+        op->printTree(intTree);
         break;
       case 6:
-        deleteNode(intTree, vec);
+        op->deleteNode(intTree, vec);
         break;
       case 7:
         exit(0);
@@ -55,19 +56,19 @@ int main() {
         system("clear");
         break;
       case 9:
-        searchRange(intTree);
+        op->searchRange(intTree);
         break;
       case 10:
-        optimisedSearch(intTree);
+        op->optimisedSearch(intTree);
         break;
       case 11:
-        insert_one_billion(intTree);
+        op->insertTenMillionAuto(intTree);
         break;
       case 12:
-        deleteTree(intTree);
+        op->deleteTree(intTree);
         break;
       case 13:
-        insertNode(intTree);
+        op->insertIntNode(intTree);
         break;
       default:
         break;

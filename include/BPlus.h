@@ -129,10 +129,6 @@ class BPlusTree {
           leafNode->next = rightNode;
           rightNode->pre = leafNode;
 
-          // rightNode->next = leafNode->next;
-          // leafNode->next = rightNode;
-          // rightNode->pre = leafNode;
-
         } else {
           // 新增的元素，大于分支节点中记录的元素，则更新
           if (parent != nullptr && parent->keys[pos] < key) {
@@ -243,55 +239,6 @@ class BPlusTree {
                               rightNode->keys.back());
       parentNode->children.insert(parentNode->children.begin() + pos + 1,
                                   rightNode);
-    }
-  }
-
- public:
-  LeafNode<KeyType> *start;
-
-  BPlusTree() { root = nullptr; }
-
-  ~BPlusTree() {
-    if (root != nullptr) {
-      // 层次遍历删除内存
-      std::queue<BPlusTreeNode<KeyType> *> queue;
-      queue.push(root);
-      while (!queue.empty()) {
-        int size = queue.size();
-        for (int i = 0; i < size; ++i) {
-          auto temp = queue.front();
-          queue.pop();
-          if (!temp->isLeaf()) {
-            auto interNode = static_cast<InternalNode<KeyType> *>(temp);
-            for (int i = 0; i < interNode->keys.size(); ++i) {
-              queue.push(interNode->children[i]);
-            }
-          } else {
-            auto leafNode = static_cast<LeafNode<KeyType> *>(temp);
-            leafNode->pre->next = nullptr;
-            leafNode->next = nullptr;
-          }
-          delete temp;
-          temp = nullptr;
-        }
-      }
-      delete start;
-      start = nullptr;
-    }
-  }
-
-  void insert(const KeyType &key, uint64_t value) {
-    if (root == nullptr) {
-      root = new LeafNode<KeyType>();
-      start = new LeafNode<KeyType>();
-      root->keys.push_back(key);
-      auto tempRoot = static_cast<LeafNode<KeyType> *>(root);
-      tempRoot->values.push_back(value);
-      tempRoot->next = nullptr;
-      tempRoot->pre = start;
-      start->next = tempRoot;
-    } else {
-      doInsert(root, key, value, nullptr, 0);
     }
   }
 
@@ -440,8 +387,6 @@ class BPlusTree {
       parent->keys.erase(parent->keys.begin() + pos);
       parent->children.erase(parent->children.begin() + pos);
 
-      // TODO,插入到右子树时，需要知道左边的节点信息，但是这里用单链表，只能从头遍历才能找到，这样不好
-      // 更改为双向链表，不等于空指针时，
       if (rightBro->pre != nullptr) {
         index->pre->next = index->next;
         index->next->pre = index->pre;
@@ -548,6 +493,7 @@ class BPlusTree {
         parent->keys.erase(parent->keys.begin() + pos - 1);
         parent->keys.insert(parent->keys.begin() + pos - 1, index->keys.back());
       }
+
       // 删除旧节点
       delete index;
       internalNode = nullptr;
@@ -564,8 +510,6 @@ class BPlusTree {
                             index->keys.end());
       rightBro->children.insert(rightBro->children.begin(),
                                 index->children.begin(), index->children.end());
-      // 更新父节点信息,只用删除不用添加 todo
-      // :有问题，如果是key对应的分支中最大的元素被删除，则需要更改key为当前最大的
 
       // 父节点删除旧子节点和key信息
       parent->keys.erase(parent->keys.begin() + pos);
@@ -604,7 +548,6 @@ class BPlusTree {
           }
 
           if (temp->keys.size() < (MAX_KEYS + 1) / 2) {
-            // TODO 这里parent可能为空，root
             borrowOrMergeInternalNode(
                 temp, static_cast<InternalNode<int> *>(parent), pos);
           }
@@ -667,24 +610,9 @@ class BPlusTree {
     }
   }
 
-  void remove(std::vector<uint64_t> &result, KeyType key) {
-    doRemove(result, root, key, nullptr, 0);
-    if (result.empty()) {
-      std::cout << "no element,cant delete." << std::endl;
-    } else {
-      auto size = result.size();
-      do {
-        size = result.size();
-        doRemove(result, root, key, nullptr, 0);
-      } while (result.size() != size);
-      std::cout << "deleted values: ";
-      for (const auto &item : result) {
-        std::cout << item << " ";
-      }
-      std::cout << std::endl;
-    }
-  }
-
+  /**
+   * 顺序查找：单key查找，并将找到的值放入result
+   */
   void getTargetNode(std::vector<uint64_t> &result,
                      BPlusTreeNode<KeyType> *index, const KeyType &key) const {
     int size = index->keys.size();  // 记录当前需要处理的元素个数
@@ -714,85 +642,7 @@ class BPlusTree {
   }
 
   /**
-   * 二分法查找第一个大于等于该元素的位置,要么返回该元素的位置，要么返回第一个大于该元素的元素
-   *
-   * @param root
-   * @param key
-   * @return
-   */
-  int binarySearch(BPlusTreeNode<KeyType> *root, const KeyType key) {
-    int low = 0;
-    int high = root->keys.size() - 1;
-
-    while (low < high) {
-      int mid = low + (high - low) / 2;
-      if (root->keys[mid] >= key) {
-        high = mid;
-      } else {
-        low = mid + 1;
-      }
-    }
-    return low;  // 返回大于等于该key的位置
-  }
-
-  /**
-   * 找到元素该插入或者所待的位置，多个相同元素时位置不固定
-   *
-   * @param root
-   * @param key
-   * @return
-   */
-  LeafNode<KeyType> *binarySearch2(BPlusTreeNode<KeyType> *root,
-                                   const KeyType key) {
-    if (root->isLeaf()) {  // 返回元素可能在的节点
-      return static_cast<LeafNode<KeyType> *>(root);
-    }
-    auto temp = static_cast<InternalNode<KeyType> *>(root);
-    int low = 0;
-    int high = temp->keys.size() - 1;
-
-    while (low < high) {
-      int mid = low + (high - low) / 2;
-      if (temp->keys[mid] >= key) {
-        high = mid;
-      } else {
-        low = mid + 1;
-      }
-    }
-    return binarySearch2(temp->children[low], key);
-  }
-
-  /**
-   * 返回目标key所在节点，二分法
-   *
-   * @param index
-   * @param key
-   * @return
-   */
-  void optimizedSearch(const KeyType &key) {
-    auto targetNode = binarySearch2(root, key);
-    int targetPos = binarySearch(targetNode, key);
-    if (targetNode->keys[targetPos] == key) {
-      std::cout << "find " << key << " :";
-      while (targetNode) {
-        for (int j = 0; j < targetNode->keys.size(); ++j) {
-          if (targetNode->keys[j] == key) {
-            std::cout << targetNode->values[j] << " ";
-          }
-          if (targetNode->keys[j] > key) {
-            std::cout << std::endl;
-            return;
-          }
-        }
-        targetNode = targetNode->next;
-      }
-    } else {
-      std::cout << "cant find " << key << std::endl;
-    }
-  }
-
-  /**
-   * 返回目标key所在节点
+   * 顺序查找：返回目标key所在节点
    *
    * @param index
    * @param key
@@ -820,14 +670,205 @@ class BPlusTree {
     }
   }
 
-  std::vector<uint64_t> search(const KeyType &key) const {
-    std::vector<uint64_t> result;
-    getTargetNode(result, root, key);
-    return result;  // Return value placeholder
+  /**
+   * 二分法查找第一个大于等于该元素的位置,要么返回该元素的位置，要么返回第一个大于该元素的元素
+   * 查找叶节点中元素
+   *
+   * @param root
+   * @param key
+   * @return
+   */
+  int binarySearchLeafNode(BPlusTreeNode<KeyType> *root, const KeyType key) {
+    int low = 0;
+    int high = root->keys.size() - 1;
+
+    while (low < high) {
+      int mid = low + (high - low) / 2;
+      if (root->keys[mid] >= key) {
+        high = mid;
+      } else {
+        low = mid + 1;
+      }
+    }
+    return low;  // 返回大于等于该key的位置
   }
 
+  /**
+   * 找到元素该插入或者所待的位置，多个相同元素时位置不固定
+   *
+   * @param root
+   * @param key
+   * @return
+   */
+  LeafNode<KeyType> *binarySearchInternalNode(BPlusTreeNode<KeyType> *root,
+                                              const KeyType key) {
+    if (root->isLeaf()) {  // 返回元素可能在的节点
+      return static_cast<LeafNode<KeyType> *>(root);
+    }
+    auto temp = static_cast<InternalNode<KeyType> *>(root);
+    int low = 0;
+    int high = temp->keys.size() - 1;
+
+    while (low < high) {
+      int mid = low + (high - low) / 2;
+      if (temp->keys[mid] >= key) {
+        high = mid;
+      } else {
+        low = mid + 1;
+      }
+    }
+    return binarySearchInternalNode(temp->children[low], key);
+  }
+
+ public:
+  LeafNode<KeyType> *start;
+
+  BPlusTree() { root = nullptr; }
+
+  ~BPlusTree() {
+    if (root != nullptr) {
+      // 层次遍历删除内存
+      std::queue<BPlusTreeNode<KeyType> *> queue;
+      queue.push(root);
+      while (!queue.empty()) {
+        int size = queue.size();
+        for (int i = 0; i < size; ++i) {
+          auto temp = queue.front();
+          queue.pop();
+          if (!temp->isLeaf()) {
+            auto interNode = static_cast<InternalNode<KeyType> *>(temp);
+            for (int i = 0; i < interNode->keys.size(); ++i) {
+              queue.push(interNode->children[i]);
+            }
+          } else {
+            auto leafNode = static_cast<LeafNode<KeyType> *>(temp);
+            leafNode->pre->next = nullptr;
+            leafNode->next = nullptr;
+          }
+          delete temp;
+          temp = nullptr;
+        }
+      }
+      delete start;
+      start = nullptr;
+    }
+  }
+
+  void insert(const KeyType &key, uint64_t value) {
+    if (root == nullptr) {
+      root = new LeafNode<KeyType>();
+      start = new LeafNode<KeyType>();
+      root->keys.push_back(key);
+      auto tempRoot = static_cast<LeafNode<KeyType> *>(root);
+      tempRoot->values.push_back(value);
+      tempRoot->next = nullptr;
+      tempRoot->pre = start;
+      start->next = tempRoot;
+    } else {
+      doInsert(root, key, value, nullptr, 0);
+    }
+  }
+
+  void remove(std::vector<uint64_t> &result, KeyType key) {
+    doRemove(result, root, key, nullptr, 0);
+    if (result.empty()) {
+      std::cout << "no element,cant delete." << std::endl;
+    } else {
+      auto size = result.size();
+      do {
+        size = result.size();
+        doRemove(result, root, key, nullptr, 0);
+      } while (result.size() != size);
+      std::cout << "deleted values: ";
+      for (const auto &item : result) {
+        std::cout << item << " ";
+      }
+      std::cout << std::endl;
+    }
+  }
+
+  /**
+   * 返回目标key所在节点，二分法
+   *
+   * @param index
+   * @param key
+   * @return
+   */
+  void optimizedSearch(const KeyType &key) {
+    auto targetNode = binarySearchInternalNode(root, key);
+    int targetPos = binarySearchLeafNode(targetNode, key);
+    if (targetNode->keys[targetPos] == key) {
+      std::cout << "find " << key << " :";
+      while (targetNode) {
+        for (int j = 0; j < targetNode->keys.size(); ++j) {
+          if (targetNode->keys[j] == key) {
+            std::cout << targetNode->values[j] << " ";
+          }
+          if (targetNode->keys[j] > key) {
+            std::cout << std::endl;
+            return;
+          }
+        }
+        targetNode = targetNode->next;
+      }
+    } else {
+      std::cout << "cant find " << key << std::endl;
+    }
+  }
+
+  int optimizedSearchTestUnique(const KeyType &key) {
+    auto targetNode = binarySearchInternalNode(root, key);
+    int targetPos = binarySearchLeafNode(targetNode, key);
+    if (targetNode->keys[targetPos] == key) {
+      return targetNode->values[targetPos];
+    } else {
+      std::cout << "cant find " << key << std::endl;
+      return -1;
+    }
+  }
+
+  int optimizedSearchTestMulti(const KeyType &key) {
+    auto targetNode = binarySearchInternalNode(root, key);
+    int targetPos = binarySearchLeafNode(targetNode, key);
+    if (targetNode->keys[targetPos] == key) {
+      std::cout << "find " << key << " :";
+      while (targetNode) {
+        for (int j = 0; j < targetNode->keys.size(); ++j) {
+          if (targetNode->keys[j] == key) {
+            return targetNode->values[j];
+          }
+          if (targetNode->keys[j] > key) {
+            std::cout << std::endl;
+            return -1;
+          }
+        }
+        targetNode = targetNode->next;
+      }
+    } else {
+      std::cout << "cant find " << key << std::endl;
+      return -1;
+    }
+  }
+
+  /**
+   * 顺序查找
+   */
+  void search(const KeyType &key) const {
+    std::vector<uint64_t> result;
+    getTargetNode(result, root, key);
+    if (result.empty()) {
+      std::cout << "can't find " << key << std::endl;
+    } else {
+      for (auto item : result) {
+        std::cout << item << " ";
+      }
+    }
+  }
+
+  /**
+   * 范围查找：顺序查找
+   */
   void searchRange(const KeyType &start, const KeyType &end) const {
-    // Range search implementation
     std::vector<uint64_t> result;
     auto startNode = doSearch(root, start);
     if (startNode == nullptr) {
@@ -897,19 +938,3 @@ class BPlusTree {
     this->MIN_KEYS = (num + 1) / 2;
   }
 };
-
-void createTestInt1(BPlusTree<int> *&intTree);
-void createTestInt2(BPlusTree<int> *&intTree);
-void createTestString1(BPlusTree<std::string> *&StringTree);
-void createTestString2(BPlusTree<std::string> *&StringTree);
-bool checkNotCreate(BPlusTree<int> *start);
-void create_bplus_tree_man(BPlusTree<int> *&intTree);
-void create_bplus_tree_auto(BPlusTree<int> *&intTree);
-void printTree(BPlusTree<int> *intTree);
-void deleteNode(BPlusTree<int> *&intTree, std::vector<uint64_t> vec);
-void searchRange(BPlusTree<int> *intTree);
-void optimisedSearch(BPlusTree<int> *intTree);
-void insert_one_billion(BPlusTree<int> *&intTree);
-void deleteTree(BPlusTree<int> *&intTree);
-void insertNode(BPlusTree<int> *&intTree);
-bool checkNotCreate(BPlusTree<int> *initTree);

@@ -1,0 +1,78 @@
+@startuml
+scale 2
+class BPlusTreeNode {
+    +keys ：vector<KeyType>
+    +isLeaf: boolean
+    +~BPlusTreeNode()
+}
+ 
+class InternalNode {
+    +isLeafNode: bool
+    +children: vector<BPlusTreeNode<KeyType> *>
+    +InternalNode()
+    +isLeaf():bool
+}
+ 
+class LeafNode {
+    +isLeafNode: bool
+    +values: vector<uint64_t>
+    +next:LeafNode<KeyType> *
+    +pre:LeafNode<KeyType> *
+    +LeafNode()
+    +isLeaf():bool
+}
+ 
+class BPlusTree {
+    -root:BPlusTreeNode<KeyType> *
+    -MAX_KEYS:int
+    -MIN_KEYS:int
+    -doInsert((BPlusTreeNode<KeyType> *&root, const KeyType &key,uint64_t value, BPlusTreeNode<KeyType> *parent, int pos)): void
+    -createRightInternalNode(const InternalNode<KeyType> *parentNode): InternalNode<KeyType> *
+    -createRightLeafNode(const LeafNode<KeyType> *leafNode): LeafNode<KeyType> *
+    -insertElement(const KeyType &key, uint64_t value, BPlusTreeNode<KeyType> *const &temp): LeafNode<KeyType> *
+    -splitInternalNode(BPlusTreeNode<KeyType> *parent, int pos,BPlusTreeNode<KeyType> *&temp): void
+    -borrowOrMergeLeafNode(BPlusTreeNode<KeyType> *&root,InternalNode<KeyType> *parent, int pos,KeyType key):void
+    -borrowOrMergeInternalNode(BPlusTreeNode<KeyType> *&internalNode, InternalNode<KeyType> *parent, int pos):void
+    -doRemove(std::vector<uint64_t> &result, BPlusTreeNode<KeyType> *root, const KeyType &key, BPlusTreeNode<KeyType> *parent, int pos):void
+    -binarySearchLeafNode(BPlusTreeNode<KeyType> *root, const KeyType key):int
+    -binarySearchInternalNode(BPlusTreeNode<KeyType> *root, const KeyType key):LeafNode<KeyType> *
+    +start:LeafNode<KeyType> *
+    +BPlusTree()
+    +~BPlusTree()
+    +insert(const KeyType &key, uint64_t value):void
+    +remove(std::vector<uint64_t> &result, KeyType key):void
+    +optimizedSearch(const KeyType &key):void
+    +search(const KeyType &key):void
+    +searchRange(const KeyType &start, const KeyType &end):void
+    +print():void
+    +setDegree():void
+}
+
+
+class UserOperation {
+    +createBPlusTreeMan()
+    +createBPlustTreeAuto()
+    +printTree()
+    +deleteNode()
+    +searchRange()
+    +optimisedSearch()
+    +insertTenMillionAuto()
+    +deleteTree()
+    +insertIntNode()
+    +checkNotCreate()
+    +testInsertIntAuto()
+    +testInsertIntNoOrder()
+}
+
+LeafNode  --* BPlusTree
+BPlusTreeNode  --* BPlusTree
+
+InternalNode --|>  BPlusTreeNode
+LeafNode --|>  BPlusTreeNode
+
+BPlusTree..>InternalNode
+BPlusTree..>LeafNode
+BPlusTree..>BPlusTreeNode
+UserOperation..>BPlusTree
+
+@enduml

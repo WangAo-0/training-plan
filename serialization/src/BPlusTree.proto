@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+
+
+message BPlusTreeS{
+    BPlusTreeNodeS root = 1;
+    int32 MAX_KEYS = 2;
+    int32 MIN_KEYS = 3;
+    LeafNodeS start = 4 ;
+}
+
+message BPlusTreeNodeS {
+    oneof node_type {
+        LeafNodeS leaf_node = 1;
+        InternalNodeS internal_node = 2;
+    }
+}
+message InternalNodeS {
+        repeated int32 keys = 1;
+        repeated BPlusTreeNodeS children = 2;
+}
+
+message LeafNodeS {
+        repeated int32 keys = 1;
+        repeated uint64 values = 2;
+        LeafNodeS next = 3;
+}

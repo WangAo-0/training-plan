@@ -1,3 +1,13 @@
+/***
+ * @Author: wangao23 oliverdebox@163.com
+ * @Date: 2023-09-05 16:36:47
+ * @LastEditors: wangao23 oliverdebox@163.com
+ * @LastEditTime: 2023-09-08 17:09:24
+ * @FilePath: /bPlusProject/test/test_case1.cpp
+ * @Description:
+ * @
+ * @Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
+ */
 #include "BPlusFunc.h"
 #include "gtest/gtest.h"
 
@@ -13,7 +23,9 @@ TEST(_search_key, avg_time) {
   start = time(NULL);
   for (int i = 0; i < 10000000; i++) {
     int r = op->getRand(1, 10000000);
-    EXPECT_EQ(intTree->optimizedSearchTestUnique(r), r * 2);
+    std::vector<uint64_t> res;
+    intTree->optimizedSearch(r, res);
+    EXPECT_EQ(res[0], r * 2);
   }
   end = time(NULL);
   std::cout << "查询耗时 :" << end - start << std::endl;

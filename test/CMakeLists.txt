@@ -25,4 +25,11 @@ target_link_libraries(test_main
     pthread
 )
 
+add_executable(test_main2 test_case2.cpp)
+target_include_directories(test_main2 PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
+target_link_libraries(test_main2
+    gtest
+    gtest_main
+    pthread
+)

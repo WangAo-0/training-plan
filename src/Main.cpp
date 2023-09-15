@@ -1,3 +1,23 @@
+/***
+ * @Author: wangao23 oliverdebox@163.com
+ * @Date: 2023-09-01 14:43:44
+ * @LastEditors: wangao23 oliverdebox@163.com
+ * @LastEditTime: 2023-09-14 13:45:54
+ * @FilePath: /bPlusProject/src/Main.cpp
+ * @Description:
+ * @
+ * @Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
+ */
+/***
+ * @Author: wangao23 oliverdebox@163.com
+ * @Date: 2023-09-01 14:43:44
+ * @LastEditors: wangao23 oliverdebox@163.com
+ * @LastEditTime: 2023-09-09 19:32:12
+ * @FilePath: /bPlusProject/src/Main.cpp
+ * @Description:
+ * @
+ * @Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
+ */
 #include <cstddef>
 #include <cstdint>
 #include <ctime>
@@ -12,11 +32,11 @@ int main() {
   std::vector<uint64_t> vec;
   UserOperation<int>* op = nullptr;
   while (true) {
-    std::cout << "-------------------------------" << std::endl;
+    std::cout << std::endl << "-------------------------------" << std::endl;
     std::cout << "Welcome to use B+ tree!" << std::endl;
     std::cout << "1. create a B+ tree(int)" << std::endl;
     std::cout << "2. test >create a B+ tree(int)" << std::endl;
-    std::cout << "3. create a B+ tree(string)" << std::endl;
+    std::cout << "3. create a B+ tree(muti)" << std::endl;
     std::cout << "4. test >create a B+ tree(string)" << std::endl;
     std::cout << "5. show the B+ tree" << std::endl;
     std::cout << "6. delete B+ tree Node by key" << std::endl;
@@ -26,6 +46,9 @@ int main() {
     std::cout << "10. search , enter key" << std::endl;
     std::cout << "11. test: insert" << std::endl;
     std::cout << "12. test: delete" << std::endl;
+    std::cout << "13. insert A data" << std::endl;
+    std::cout << "14. serialization" << std::endl;
+    std::cout << "15. deserialization" << std::endl;
     std::cout << "-------------------------------" << std::endl;
     int funcNum = -1;
     std::cin >> funcNum;
@@ -38,7 +61,7 @@ int main() {
         op->createBPlustTreeAuto(intTree);
         break;
       case 3:
-        std::cout << "sorry, the func is not avaliable." << std::endl;
+        op->createBPlusTreeMuti(intTree);
         break;
       case 4:
         std::cout << "sorry, the func is not avaliable." << std::endl;
@@ -70,6 +93,11 @@ int main() {
       case 13:
         op->insertIntNode(intTree);
         break;
+      case 14:
+        op->serializationTest(intTree);
+        break;
+      case 15:
+        op->deserializationTest(intTree);
       default:
         break;
     }

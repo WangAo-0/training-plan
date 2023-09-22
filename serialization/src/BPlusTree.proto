@@ -1,7 +1,4 @@
 syntax = "proto3";
-
-
-
 message BPlusTreeS{
     BPlusTreeNodeS root = 1;
     int32 MAX_KEYS = 2;

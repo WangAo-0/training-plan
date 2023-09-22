@@ -23,9 +23,32 @@
 #include <ctime>
 #include <iostream>
 #include <ostream>
+#include <thread>
 #include <vector>
 
 #include "BPlusFunc.h"
+
+void writeWorker(BPlusTree<int>* intTree, int i) {
+  intTree->insert(i, 2 * i, i);
+  intTree->print();
+}
+
+void mutiTest(BPlusTree<int>*& intTree, UserOperation<int>* op) {
+  if (intTree != nullptr) {
+    delete intTree;
+  }
+  intTree = new BPlusTree<int>();
+
+  intTree->setDegree(op->putADegree());
+  std::vector<std::thread> threads;
+
+  for (int i = 0; i < 10; i++) {
+    threads.push_back(std::thread(writeWorker, intTree, i));
+  }
+  for (auto& item : threads) {
+    item.join();
+  }
+}
 
 int main() {
   BPlusTree<int>* intTree = nullptr;
@@ -49,6 +72,8 @@ int main() {
     std::cout << "13. insert A data" << std::endl;
     std::cout << "14. serialization" << std::endl;
     std::cout << "15. deserialization" << std::endl;
+    std::cout << "16. multithread" << std::endl;
+
     std::cout << "-------------------------------" << std::endl;
     int funcNum = -1;
     std::cin >> funcNum;
@@ -98,6 +123,11 @@ int main() {
         break;
       case 15:
         op->deserializationTest(intTree);
+        break;
+      case 16:
+        mutiTest(intTree, op);
+        // op->multiThreadTest(intTree);
+        break;
       default:
         break;
     }

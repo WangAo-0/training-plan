@@ -1,5 +1,7 @@
 add_executable(test_main test_case1.cpp)
 target_include_directories(test_main PRIVATE ${CMAKE_SOURCE_DIR}/include)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -std=c++17")
+
 
 #add_library(bplusUtils PRIVATE bplusUtils.cpp)
 #target_include_directories(bplusUtils ${soucre_dir}/include)
@@ -29,6 +31,15 @@ add_executable(test_main2 test_case2.cpp)
 target_include_directories(test_main2 PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
 target_link_libraries(test_main2
+    gtest
+    gtest_main
+    pthread
+)
+
+add_executable(test_main3 test_case3_multi.cpp)
+target_include_directories(test_main3 PRIVATE ${CMAKE_SOURCE_DIR}/include)
+
+target_link_libraries(test_main3
     gtest
     gtest_main
     pthread

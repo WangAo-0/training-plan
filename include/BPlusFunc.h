@@ -1,6 +1,8 @@
 #include <cstdint>
 #include <iostream>
 #include <ostream>
+#include <thread>
+#include <vector>
 
 #include "BPlus.h"
 
@@ -119,6 +121,9 @@ class UserOperation {
   }
 
   void printVector(std::vector<uint64_t> &res) {
+    if (res.empty()) {
+      return;
+    }
     std::cout << std::endl;
     std::cout << "查询到的数据为:";
     for (auto item : res) {
@@ -189,22 +194,32 @@ class UserOperation {
 
   void testInsertIntAuto(BPlusTree<int> *&intTree) {
     for (int i = 1; i < 10; ++i) {
-      intTree->insert(i, i * 2);
+      intTree->insert(i, i * 2, i);
     }
   }
 
   void testInsertIntNoOrder(BPlusTree<int> *&intTree) {
     intTree->insert(5, 100);
     intTree->insert(3, 200);
+
     intTree->insert(7, 300);
+
     intTree->insert(4, 400);
+
     intTree->insert(8, 300);
+
     intTree->insert(9, 400);
+
     intTree->insert(6, 400);
+
     intTree->insert(6, 400);
+
     intTree->insert(7, 400);
-    intTree->insert(5, 100);
-    intTree->insert(3, 200);
+    intTree->print();
+    //   intTree->insert(5, 100);
+    //  intTree->insert(7, 100);
+
+    //   intTree->insert(3, 200);
     intTree->insert(7, 300);
     intTree->insert(4, 400);
     intTree->insert(8, 300);
@@ -237,6 +252,10 @@ class UserOperation {
   int getRand(int min, int max) { return (rand() % (max - min + 1)) + min; }
 
   void serializationTest(BPlusTree<KeyType> *&tree) {
+    if (tree == nullptr) {
+      std::cout << "please create a b+ tree" << std::endl;
+      return;
+    }
     tree->serialiaztionTree();
   }
 
@@ -249,9 +268,64 @@ class UserOperation {
     tree->deserializationTree();
   }
 
-  void multiThreadTest(BPlusTree<KeyType> *&tree) {
-    // 创建多个线程
-    // 多线程策略：latch crabbing ;
+  void readerTest(BPlusTree<KeyType> *&tree) {
+    std::vector<uint64_t> res;
+    tree->search(13, res);
+    if (res.empty()) {
+      std::cout << "readerA dont find ." << std::endl;
+    } else {
+      std::cout << "readerA" << res[0] << std::endl;
+    }
+  }
+
+  void multiThreadTest(BPlusTree<KeyType> *tree) {
+    // // 创建多个线程
+    // // 多线程策略：latch crabbing ;
+    // //
     // 适用于读多写少：可以同时读，但不可以同时写，谁先写，另外一个等待，不竞争
+    // std::thread writer0([tree]() { tree->insert(9, 3, 0); });
+    // // 这里不会等待，直接出结果
+
+    // std::thread writer1([tree]() { tree->insert(13, 4, 1); });
+    // //    tree->print();
+
+    // std::thread writer2([tree]() { tree->insert(12, 5, 2); });
+    // //    tree->print();
+
+    // std::thread writer3([tree]() { tree->insert(14, 6, 3); });
+    // // tree->print();
+
+    // std::thread writer4([tree]() { tree->insert(15, 7, 4); });
+    // //    tree->print();
+
+    // std::thread writer5([tree]() { tree->insert(16, 7, 5); });
+    // //   tree->print();
+
+    // std::thread writer6([tree]() { tree->insert(17, 7); });
+    // //  tree->print();
+
+    // std::thread writer7([tree]() { tree->insert(18, 7); });
+    // //  tree->print();
+    // std::thread writer8([tree]() { tree->insert(19, 7); });
+    // //   tree->print();
+    // writer0.join();
+    // writer1.join();
+    // writer2.join();
+    // writer3.join();
+    // writer4.join();
+    // writer5.join();
+    // writer6.join();
+    // writer7.join();
+    // writer8.join();
+
+    // // std::thread readerA([tree]() {
+    // //   std::vector<uint64_t> res;
+    // //   tree->search(13, res);
+    // //   if (res.empty()) {
+    // //     std::cout << "readerA dont find ." << std::endl;
+    // //   } else {
+    // //     std::cout << "readerA" << res[0] << std::endl;
+    // //   }
+    // // });
   }
 };

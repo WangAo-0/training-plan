@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile ProtoBuf",
+            "type": "shell",
+            "command": "protoc",
+            "args": [
+                "--cpp_out=serialization/out",
+                "serialization/src/BPlusTree.proto"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

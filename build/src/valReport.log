@@ -1,0 +1,351 @@
+==7173== Memcheck, a memory error detector
+==7173== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==7173== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==7173== Command: ./main
+==7173== Parent PID: 1060
+==7173== 
+==7173== Invalid write of size 8
+==7173==    at 0x111864: BPlusTree<int>::~BPlusTree() (BPlus.h:1043)
+==7173==    by 0x10F66F: main (Main.cpp:113)
+==7173==  Address 0x515da28 is 120 bytes inside a block of size 136 free'd
+==7173==    at 0x483D1CF: operator delete(void*, unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x1116F8: LeafNode<int>::~LeafNode() (BPlus.h:49)
+==7173==    by 0x111892: BPlusTree<int>::~BPlusTree() (BPlus.h:1046)
+==7173==    by 0x10F66F: main (Main.cpp:113)
+==7173==  Block was alloc'd at
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x1109E8: BPlusTree<int>::insert(int const&, unsigned long, int) (BPlus.h:1064)
+==7173==    by 0x111A53: UserOperation<int>::testInsertIntAuto(BPlusTree<int>*&) (BPlusFunc.h:197)
+==7173==    by 0x111E61: UserOperation<int>::createBPlustTreeAuto(BPlusTree<int>*&) (BPlusFunc.h:50)
+==7173==    by 0x10F5C1: main (Main.cpp:98)
+==7173== 
+==7173== 
+==7173== Process terminating with default action of signal 27 (SIGPROF)
+==7173==    at 0x4E814FA: __open_nocancel (open64_nocancel.c:45)
+==7173==    by 0x4E8F2DF: write_gmon (gmon.c:370)
+==7173==    by 0x4E8FB3E: _mcleanup (gmon.c:444)
+==7173==    by 0x4DB4FDD: __cxa_finalize (cxa_finalize.c:83)
+==7173==    by 0x10EF66: ??? (in /home/oliver/Developer/bPlusProject/build/src/main)
+==7173==    by 0x4011F6A: _dl_fini (dl-fini.c:138)
+==7173==    by 0x4DB48A6: __run_exit_handlers (exit.c:108)
+==7173==    by 0x4DB4A5F: exit (exit.c:139)
+==7173==    by 0x10F686: main (Main.cpp:114)
+==7173== 
+==7173== HEAP SUMMARY:
+==7173==     in use at exit: 307,674 bytes in 165 blocks
+==7173==   total heap usage: 1,623 allocs, 1,458 frees, 466,812 bytes allocated
+==7173== 
+==7173== 32 bytes in 1 blocks are still reachable in loss record 1 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4A15719: google::protobuf::MessageFactory::InternalRegisterGeneratedFile(char const*, void (*)(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x12E632: protobuf_serialization_2fsrc_2fBPlusTree_2eproto::AddDescriptorsImpl() (BPlusTree.pb.cc:217)
+==7173==    by 0x138B18: void std::__invoke_impl<void, void (&)()>(std::__invoke_other, void (&)()) (invoke.h:60)
+==7173==    by 0x1387C9: std::__invoke_result<void (&)()>::type std::__invoke<void (&)()>(void (&)()) (invoke.h:95)
+==7173==    by 0x1379CA: void std::call_once<void (&)()>(std::once_flag&, void (&)())::{lambda()#1}::operator()() const (mutex:671)
+==7173==    by 0x1379F6: void std::call_once<void (&)()>(std::once_flag&, void (&)())::{lambda()#2}::operator()() const (mutex:676)
+==7173==    by 0x137A11: void std::call_once<void (&)()>(std::once_flag&, void (&)())::{lambda()#2}::_FUN() (mutex:676)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x1339E1: __gthread_once(int*, void (*)()) (gthr-default.h:700)
+==7173==    by 0x137AA7: void std::call_once<void (&)()>(std::once_flag&, void (&)()) (mutex:683)
+==7173==    by 0x135BEB: void google::protobuf::internal::call_once<std::once_flag&, void (&)()>(std::once_flag&, void (&)()) (once.h:91)
+==7173== 
+==7173== 46 bytes in 2 blocks are still reachable in loss record 2 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4934B5C: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A88E1: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddFile(google::protobuf::FileDescriptorProto const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A4BEF: google::protobuf::EncodedDescriptorDatabase::Add(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496FF43: google::protobuf::DescriptorPool::InternalAddGeneratedFile(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4966E2D: protobuf_google_2fprotobuf_2fany_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 48 bytes in 1 blocks are still reachable in loss record 3 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4A25025: google::protobuf::Struct::Struct() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4A25131: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4950222: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x495065F: google::protobuf::internal::InitSCCImpl(google::protobuf::internal::SCCInfoBase*) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4A220FC: protobuf_google_2fprotobuf_2fstruct_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 64 bytes in 1 blocks are still reachable in loss record 4 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x492B799: google::protobuf::internal::OnShutdownRun(void (*)(void const*), void const*) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x495032D: google::protobuf::internal::InitProtobufDefaults() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4950637: google::protobuf::internal::InitSCCImpl(google::protobuf::internal::SCCInfoBase*) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4966E1C: protobuf_google_2fprotobuf_2fany_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 64 bytes in 1 blocks are still reachable in loss record 5 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4A2505B: google::protobuf::Struct::Struct() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4A25131: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4950222: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x495065F: google::protobuf::internal::InitSCCImpl(google::protobuf::internal::SCCInfoBase*) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4A220FC: protobuf_google_2fprotobuf_2fstruct_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 80 bytes in 1 blocks are still reachable in loss record 6 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x49A88C0: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddFile(google::protobuf::FileDescriptorProto const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A4BEF: google::protobuf::EncodedDescriptorDatabase::Add(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496FF43: google::protobuf::DescriptorPool::InternalAddGeneratedFile(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4966E2D: protobuf_google_2fprotobuf_2fany_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 80 bytes in 1 blocks are still reachable in loss record 7 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x49A742F: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A874F: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddSymbol(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A8A15: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddFile(google::protobuf::FileDescriptorProto const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A4BEF: google::protobuf::EncodedDescriptorDatabase::Add(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496FF43: google::protobuf::DescriptorPool::InternalAddGeneratedFile(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4966E2D: protobuf_google_2fprotobuf_2fany_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 80 bytes in 1 blocks are still reachable in loss record 8 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x49A88C0: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddFile(google::protobuf::FileDescriptorProto const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A4BEF: google::protobuf::EncodedDescriptorDatabase::Add(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496FF43: google::protobuf::DescriptorPool::InternalAddGeneratedFile(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x12E61F: protobuf_serialization_2fsrc_2fBPlusTree_2eproto::AddDescriptorsImpl() (BPlusTree.pb.cc:216)
+==7173==    by 0x138B18: void std::__invoke_impl<void, void (&)()>(std::__invoke_other, void (&)()) (invoke.h:60)
+==7173==    by 0x1387C9: std::__invoke_result<void (&)()>::type std::__invoke<void (&)()>(void (&)()) (invoke.h:95)
+==7173==    by 0x1379CA: void std::call_once<void (&)()>(std::once_flag&, void (&)())::{lambda()#1}::operator()() const (mutex:671)
+==7173==    by 0x1379F6: void std::call_once<void (&)()>(std::once_flag&, void (&)())::{lambda()#2}::operator()() const (mutex:676)
+==7173==    by 0x137A11: void std::call_once<void (&)()>(std::once_flag&, void (&)())::{lambda()#2}::_FUN() (mutex:676)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x1339E1: __gthread_once(int*, void (*)()) (gthr-default.h:700)
+==7173== 
+==7173== 91 bytes in 4 blocks are still reachable in loss record 9 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4934B5C: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A88E1: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddFile(google::protobuf::FileDescriptorProto const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A4BEF: google::protobuf::EncodedDescriptorDatabase::Add(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496FF43: google::protobuf::DescriptorPool::InternalAddGeneratedFile(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496881D: protobuf_google_2fprotobuf_2fapi_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 96 bytes in 3 blocks are still reachable in loss record 10 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4A15719: google::protobuf::MessageFactory::InternalRegisterGeneratedFile(char const*, void (*)(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4968830: protobuf_google_2fprotobuf_2fapi_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 104 bytes in 1 blocks are still reachable in loss record 11 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4A13CE0: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4A1B7F2: std::_Hashtable<char const*, std::pair<char const* const, void (*)(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)>, std::allocator<std::pair<char const* const, void (*)(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)> >, std::__detail::_Select1st, google::protobuf::streq, google::protobuf::hash<char const*>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash(unsigned long, unsigned long const&) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4A15763: google::protobuf::MessageFactory::InternalRegisterGeneratedFile(char const*, void (*)(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 160 bytes in 1 blocks are still reachable in loss record 12 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4A147D1: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4A15631: google::protobuf::MessageFactory::InternalRegisterGeneratedFile(char const*, void (*)(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 176 bytes in 1 blocks are still reachable in loss record 13 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x496E469: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496FF35: google::protobuf::DescriptorPool::InternalAddGeneratedFile(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4966E2D: protobuf_google_2fprotobuf_2fany_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 232 bytes in 1 blocks are still reachable in loss record 14 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4A6E790: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4A7B3C2: std::_Hashtable<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, google::protobuf::FieldDescriptorProto_Type>, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, google::protobuf::FieldDescriptorProto_Type> >, std::__detail::_Select1st, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, google::protobuf::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_rehash(unsigned long, unsigned long const&) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4A7B5E0: std::__detail::_Map_base<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, google::protobuf::FieldDescriptorProto_Type>, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, google::protobuf::FieldDescriptorProto_Type> >, std::__detail::_Select1st, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, google::protobuf::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, true>::operator[](std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&&) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x492925B: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4929429: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 256 bytes in 8 blocks are still reachable in loss record 15 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4A15719: google::protobuf::MessageFactory::InternalRegisterGeneratedFile(char const*, void (*)(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 320 bytes in 4 blocks are still reachable in loss record 16 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x49A742F: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A8660: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddSymbol(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A8A15: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddFile(google::protobuf::FileDescriptorProto const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A4BEF: google::protobuf::EncodedDescriptorDatabase::Add(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496FF43: google::protobuf::DescriptorPool::InternalAddGeneratedFile(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x12E61F: protobuf_serialization_2fsrc_2fBPlusTree_2eproto::AddDescriptorsImpl() (BPlusTree.pb.cc:216)
+==7173==    by 0x138B18: void std::__invoke_impl<void, void (&)()>(std::__invoke_other, void (&)()) (invoke.h:60)
+==7173==    by 0x1387C9: std::__invoke_result<void (&)()>::type std::__invoke<void (&)()>(void (&)()) (invoke.h:95)
+==7173==    by 0x1379CA: void std::call_once<void (&)()>(std::once_flag&, void (&)())::{lambda()#1}::operator()() const (mutex:671)
+==7173==    by 0x1379F6: void std::call_once<void (&)()>(std::once_flag&, void (&)())::{lambda()#2}::operator()() const (mutex:676)
+==7173==    by 0x137A11: void std::call_once<void (&)()>(std::once_flag&, void (&)())::{lambda()#2}::_FUN() (mutex:676)
+==7173== 
+==7173== 800 bytes in 10 blocks are still reachable in loss record 17 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x49A88C0: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddFile(google::protobuf::FileDescriptorProto const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A4BEF: google::protobuf::EncodedDescriptorDatabase::Add(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496FF43: google::protobuf::DescriptorPool::InternalAddGeneratedFile(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496881D: protobuf_google_2fprotobuf_2fapi_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 896 bytes in 16 blocks are still reachable in loss record 18 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4A7B561: std::__detail::_Map_base<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, google::protobuf::FieldDescriptorProto_Type>, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, google::protobuf::FieldDescriptorProto_Type> >, std::__detail::_Select1st, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, google::protobuf::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, true>::operator[](std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&&) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4929000: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4929429: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 1,024 bytes in 1 blocks are still reachable in loss record 19 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x492BDB2: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x492B7EA: google::protobuf::internal::OnShutdownRun(void (*)(void const*), void const*) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4969318: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4950222: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x495065F: google::protobuf::internal::InitSCCImpl(google::protobuf::internal::SCCInfoBase*) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49687CC: protobuf_google_2fprotobuf_2fapi_2eproto::InitDefaults() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496880C: protobuf_google_2fprotobuf_2fapi_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173== 
+==7173== 1,120 bytes in 14 blocks are still reachable in loss record 20 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x49A742F: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A8660: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddSymbol(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A8A15: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddFile(google::protobuf::FileDescriptorProto const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A4BEF: google::protobuf::EncodedDescriptorDatabase::Add(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496FF43: google::protobuf::DescriptorPool::InternalAddGeneratedFile(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4A2210D: protobuf_google_2fprotobuf_2fstruct_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 1,631 bytes in 55 blocks are still reachable in loss record 21 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4934B5C: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A88E1: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddFile(google::protobuf::FileDescriptorProto const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A4BEF: google::protobuf::EncodedDescriptorDatabase::Add(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496FF43: google::protobuf::DescriptorPool::InternalAddGeneratedFile(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4A212DD: protobuf_google_2fprotobuf_2fsource_5fcontext_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4968835: protobuf_google_2fprotobuf_2fapi_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173== 
+==7173== 2,080 bytes in 2 blocks are still reachable in loss record 22 of 24
+==7173==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4DB4C41: __new_exitfn (cxa_atexit.c:114)
+==7173==    by 0x4DB4E26: __internal_atexit (cxa_atexit.c:44)
+==7173==    by 0x4DB4E26: __cxa_atexit (cxa_atexit.c:70)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 2,720 bytes in 34 blocks are still reachable in loss record 23 of 24
+==7173==    at 0x483BE63: operator new(unsigned long) (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x49A742F: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A8660: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddSymbol(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A8A15: google::protobuf::SimpleDescriptorDatabase::DescriptorIndex<std::pair<void const*, int> >::AddFile(google::protobuf::FileDescriptorProto const&, std::pair<void const*, int>) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x49A4BEF: google::protobuf::EncodedDescriptorDatabase::Add(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496FF43: google::protobuf::DescriptorPool::InternalAddGeneratedFile(void const*, int) (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x496881D: protobuf_google_2fprotobuf_2fapi_2eproto::AddDescriptorsImpl() (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4B5F4DE: __pthread_once_slow (pthread_once.c:116)
+==7173==    by 0x4967BE8: ??? (in /usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0)
+==7173==    by 0x4011B99: call_init.part.0 (dl-init.c:72)
+==7173==    by 0x4011CA0: call_init (dl-init.c:30)
+==7173==    by 0x4011CA0: _dl_init (dl-init.c:119)
+==7173==    by 0x4001139: ??? (in /usr/lib/x86_64-linux-gnu/ld-2.31.so)
+==7173== 
+==7173== 295,474 bytes in 1 blocks are still reachable in loss record 24 of 24
+==7173==    at 0x483DD99: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7173==    by 0x4E8F971: monstartup (gmon.c:153)
+==7173==    by 0x10EEA0: __gmon_start__ (in /home/oliver/Developer/bPlusProject/build/src/main)
+==7173==    by 0x4F8B015: ??? (in /usr/lib/x86_64-linux-gnu/libm-2.31.so)
+==7173== 
+==7173== LEAK SUMMARY:
+==7173==    definitely lost: 0 bytes in 0 blocks
+==7173==    indirectly lost: 0 bytes in 0 blocks
+==7173==      possibly lost: 0 bytes in 0 blocks
+==7173==    still reachable: 307,674 bytes in 165 blocks
+==7173==         suppressed: 0 bytes in 0 blocks
+==7173== 
+==7173== For lists of detected and suppressed errors, rerun with: -s
+==7173== ERROR SUMMARY: 2 errors from 1 contexts (suppressed: 0 from 0)

@@ -33,6 +33,12 @@ void writeWorker(BPlusTree<int>* intTree, int i) {
   intTree->print();
 }
 
+void deleteWorker(BPlusTree<int>* intTree, UserOperation<int>* user, int i) {
+  std::vector<uint64_t> result;
+  intTree->remove(result, i);
+  user->printVector(result);
+}
+
 void mutiTest(BPlusTree<int>*& intTree, UserOperation<int>* op) {
   if (intTree != nullptr) {
     delete intTree;
@@ -40,14 +46,20 @@ void mutiTest(BPlusTree<int>*& intTree, UserOperation<int>* op) {
   intTree = new BPlusTree<int>();
 
   intTree->setDegree(op->putADegree());
+  op->testInsertIntAuto(intTree);
   std::vector<std::thread> threads;
 
-  for (int i = 0; i < 10; i++) {
-    threads.push_back(std::thread(writeWorker, intTree, i));
-  }
-  for (auto& item : threads) {
-    item.join();
-  }
+  // for (int i = 0; i < 1; i++) {
+  //   threads.push_back(std::thread(deleteWorker, intTree, op, i));
+  // }
+  // for (auto& item : threads) {
+  //   item.join();
+  // }
+  intTree->print();
+
+  std::thread del(deleteWorker, intTree, op, 3);
+  del.join();
+  intTree->print();
 }
 
 int main() {
@@ -98,6 +110,7 @@ int main() {
         op->deleteNode(intTree, vec);
         break;
       case 7:
+        delete intTree;
         exit(0);
         break;
       case 8:

@@ -216,37 +216,38 @@ class UserOperation {
 
     intTree->insert(7, 400);
     intTree->print();
-    //   intTree->insert(5, 100);
-    //  intTree->insert(7, 100);
+    intTree->insert(7, 300);
+    intTree->insert(4, 400);
+    intTree->insert(8, 300);
+    intTree->insert(9, 400);
+    intTree->insert(10, 400);
+    intTree->insert(6, 400);
+    intTree->insert(6, 400);
+    intTree->insert(7, 400);
+    intTree->insert(5, 100);
+    intTree->insert(5, 100);
+    intTree->insert(3, 200);
+    intTree->insert(7, 300);
+    intTree->insert(4, 400);
+    intTree->insert(8, 300);
+    intTree->insert(9, 400);
+    intTree->insert(6, 400);
+    intTree->insert(6, 400);
+    intTree->insert(7, 400);
+    intTree->insert(5, 100);
+    intTree->insert(3, 200);
+    intTree->insert(7, 300);
+    intTree->insert(4, 400);
+    intTree->insert(8, 300);
+    intTree->insert(9, 400);
+    intTree->insert(10, 400);
+    intTree->insert(6, 400);
+    intTree->insert(5, 100);
+    intTree->print();
 
-    //   intTree->insert(3, 200);
-    intTree->insert(7, 300);
-    intTree->insert(4, 400);
-    intTree->insert(8, 300);
-    intTree->insert(9, 400);
-    intTree->insert(10, 400);
-    intTree->insert(6, 400);
-    intTree->insert(6, 400);
-    intTree->insert(7, 400);
-    intTree->insert(5, 100);
-    intTree->insert(5, 100);
-    intTree->insert(3, 200);
-    intTree->insert(7, 300);
-    intTree->insert(4, 400);
-    intTree->insert(8, 300);
-    intTree->insert(9, 400);
-    intTree->insert(6, 400);
-    intTree->insert(6, 400);
-    intTree->insert(7, 400);
-    intTree->insert(5, 100);
-    intTree->insert(3, 200);
-    intTree->insert(7, 300);
-    intTree->insert(4, 400);
-    intTree->insert(8, 300);
-    intTree->insert(9, 400);
-    intTree->insert(10, 400);
-    intTree->insert(6, 400);
-    intTree->insert(5, 100);
+    std::vector<uint64_t> result;
+    intTree->remove(result, 10);
+    intTree->print();
   }
 
   int getRand(int min, int max) { return (rand() % (max - min + 1)) + min; }

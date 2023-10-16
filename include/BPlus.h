@@ -33,6 +33,7 @@ class InternalNode : public BPlusTreeNode<KeyType> {
   std::vector<BPlusTreeNode<KeyType> *> children;  // vector存指针
 
   InternalNode() : isLeafNode(false) {}  // 非空构造函数
+  ~InternalNode() = default;
   bool isLeaf() const override { return isLeafNode; }
 };
 
@@ -45,6 +46,7 @@ class LeafNode : public BPlusTreeNode<KeyType> {
   LeafNode<KeyType> *next;
   LeafNode<KeyType> *pre;
   LeafNode() : isLeafNode(true) {}
+  ~LeafNode() = default;
   bool isLeaf() const override { return isLeafNode; }
 };
 
@@ -289,8 +291,8 @@ class BPlusTree {
         return leafNode;
       }
     }
-    leafNode->keys.insert(leafNode->keys.end(), key);
-    leafNode->values.insert(leafNode->values.end(), value);
+    leafNode->keys.push_back(key);
+    leafNode->values.push_back(value);
     return leafNode;
   }
 
@@ -378,6 +380,8 @@ class BPlusTree {
 
     // 当节点删除完时,更新父节点信息,删除该节点
     if (index->keys.size() == 0) {
+      // 叶子节点中元素删完后，需要删除该节点(需要释放该元素的锁)，并需要前后两个节点做连接（前后两个节点的锁）
+      // 获取前后锁怎么办，
       std::unique_lock<std::shared_mutex> lockPre(index->pre->rw_mutex);
       std::unique_lock<std::shared_mutex> lockNext(index->next->rw_mutex);
       parent->keys.erase(parent->keys.begin() + pos);
@@ -386,6 +390,11 @@ class BPlusTree {
       if (index->next != nullptr) {
         index->next->pre = index->pre;
       }
+
+      // ToDo 释放旧节点的锁
+      queueLatch.back()->unlock();
+      queueLatch.pop_back();
+
       delete index;
       root = nullptr;
       index = nullptr;
@@ -400,7 +409,7 @@ class BPlusTree {
       int borrowNum = MIN_KEYS - index->keys.size();
       if (leftBro->keys.size() - borrowNum >= MIN_KEYS) {  // 可以借
         // 借左边的节点
-        std::unique_lock<std::shared_mutex> lock(leftBro->rw_mutex);
+        //     std::unique_lock<std::shared_mutex> lock(leftBro->rw_mutex);
         index->keys.insert(index->keys.begin(), leftBro->keys.end() - borrowNum,
                            leftBro->keys.end());
         index->values.insert(index->values.begin(),
@@ -426,7 +435,7 @@ class BPlusTree {
       int borrowNum = MIN_KEYS - index->keys.size();
       if (rightBro->keys.size() - borrowNum >= MIN_KEYS) {  // 可以借
         // 借一个右边的节点
-        std::unique_lock<std::shared_mutex> lock(rightBro->rw_mutex);
+        //    std::unique_lock<std::shared_mutex> lock(rightBro->rw_mutex);
 
         index->keys.insert(index->keys.end(), rightBro->keys.begin(),
                            rightBro->keys.begin() + borrowNum);
@@ -450,7 +459,7 @@ class BPlusTree {
       auto leftBro =
           static_cast<LeafNode<KeyType> *>(parent->children[pos - 1]);
       // 插入元素到左孩子的节点
-      std::unique_lock<std::shared_mutex> lock(leftBro->rw_mutex);
+      //    std::unique_lock<std::shared_mutex> lock(leftBro->rw_mutex);
 
       leftBro->keys.insert(leftBro->keys.end(), index->keys.begin(),
                            index->keys.end());
@@ -482,6 +491,9 @@ class BPlusTree {
       if (index->next != nullptr) {
         index->next->pre = index->pre;
       }
+      // 释放旧节点锁
+      queueLatch.back()->unlock();
+      queueLatch.pop_back();
       delete index;
       root = nullptr;
       index = nullptr;
@@ -492,7 +504,7 @@ class BPlusTree {
     if (pos + 1 < parent->keys.size()) {
       auto rightBro =
           static_cast<LeafNode<KeyType> *>(parent->children[pos + 1]);
-      std::unique_lock<std::shared_mutex> lock(rightBro->rw_mutex);
+      //  std::unique_lock<std::shared_mutex> lock(rightBro->rw_mutex);
 
       // 插入元素到右孩子的节点
       rightBro->keys.insert(rightBro->keys.begin(), index->keys.begin(),
@@ -511,6 +523,9 @@ class BPlusTree {
         index->pre->next = index->next;
         index->next->pre = index->pre;
       }
+      // 释放旧节点锁
+      queueLatch.back()->unlock();
+      queueLatch.pop_back();
       delete index;
       root = nullptr;
       index = nullptr;
@@ -558,7 +573,7 @@ class BPlusTree {
       // 1.1 先借左边
       int borrowNum = MIN_KEYS - index->keys.size();
       if (leftBro->keys.size() - borrowNum >= MIN_KEYS) {  // 可以借
-        std::unique_lock<std::shared_mutex> lock(leftBro->rw_mutex);
+        //    std::unique_lock<std::shared_mutex> lock(leftBro->rw_mutex);
 
         // 借一个左边的节点
         index->keys.insert(index->keys.begin(), leftBro->keys.end() - borrowNum,
@@ -586,7 +601,7 @@ class BPlusTree {
       int borrowNum = MIN_KEYS - index->keys.size();
       if (rightBro->keys.size() - borrowNum >= MIN_KEYS) {  // 可以借
         // 借一个右边的节点
-        std::unique_lock<std::shared_mutex> lock(rightBro->rw_mutex);
+        //    std::unique_lock<std::shared_mutex> lock(rightBro->rw_mutex);
 
         index->keys.insert(index->keys.end(), rightBro->keys.begin(),
                            rightBro->keys.begin() + borrowNum);
@@ -611,7 +626,7 @@ class BPlusTree {
       auto leftBro =
           static_cast<InternalNode<KeyType> *>(parent->children[pos - 1]);
       // 插入元素到左孩子的节点
-      std::unique_lock<std::shared_mutex> lock(leftBro->rw_mutex);
+      //   std::unique_lock<std::shared_mutex> lock(leftBro->rw_mutex);
 
       leftBro->keys.insert(leftBro->keys.end(), index->keys.begin(),
                            index->keys.end());
@@ -630,7 +645,9 @@ class BPlusTree {
         parent->keys.erase(parent->keys.begin() + pos - 1);
         parent->keys.insert(parent->keys.begin() + pos - 1, index->keys.back());
       }
-
+      // 释放旧节点的锁
+      queueLatch.back()->unlock();
+      queueLatch.pop_back();
       // 删除旧节点
       delete index;
       internalNode = nullptr;
@@ -641,7 +658,7 @@ class BPlusTree {
     if (pos + 1 < parent->keys.size()) {
       auto rightBro =
           static_cast<InternalNode<KeyType> *>(parent->children[pos + 1]);
-      std::unique_lock<std::shared_mutex> lock(rightBro->rw_mutex);
+      //    std::unique_lock<std::shared_mutex> lock(rightBro->rw_mutex);
 
       // 插入元素到右孩子的节点
       rightBro->keys.insert(rightBro->keys.begin(), index->keys.begin(),
@@ -652,6 +669,9 @@ class BPlusTree {
       // 父节点删除旧子节点和key信息
       parent->keys.erase(parent->keys.begin() + pos);
       parent->children.erase(parent->children.begin() + pos);
+      // 释放旧节点信息
+      queueLatch.back()->unlock();
+      queueLatch.pop_back();
       // 删除旧节点的内存
       delete index;
       internalNode = nullptr;
@@ -719,8 +739,12 @@ class BPlusTree {
           break;
         }
       }
+      if (deleteNum == 0) {
+        unlockRQueue(queueLatch);
+        return true;
+      }
 
-      // 删除元素后，不会合并或分离 且 删除的元素不是节点的最大值时，安全；
+      // 删除元素后，不小于MIN_KEYS 且 删除的元素不是节点的最大值时，安全；
       // 不安全
       if (leafNode->keys.size() - deleteNum < (MAX_KEYS + 1) / 2 ||
           key >= leafNode->keys.back()) {
@@ -770,6 +794,7 @@ class BPlusTree {
     BPlusTreeNode<KeyType> *&temp = root;
     std::unique_lock<std::shared_mutex> *lock =
         new std::unique_lock<std::shared_mutex>(root->rw_mutex);
+    queueLatch.push_back(lock);
     int size = temp->keys.size();  // 记录当前需要处理的元素个数
     if (!temp->isLeaf()) {         // 分支节点
       for (decltype(temp->keys.size()) i = 0; i < size; i++) {
@@ -819,6 +844,10 @@ class BPlusTree {
         if (leafNode->keys[j] > key) {
           break;
         }
+      }
+      if (result.empty()) {
+        unlockWQueue(queueLatch);
+        return;
       }
 
       // 删除元素
@@ -1031,11 +1060,11 @@ class BPlusTree {
    * @return void
    */
   void insert(const KeyType &key, uint64_t value, int flag = 0) {
-    //  std::cout << "thread " << flag << " insert key " << key << std::endl;
     if (root == nullptr) {
       root = new LeafNode<KeyType>();
       std::unique_lock<std::shared_mutex> lock(root->rw_mutex);
       start = new LeafNode<KeyType>();
+      std::unique_lock<std::shared_mutex> Start(start->rw_mutex);
       root->keys.push_back(key);
       auto tempRoot = static_cast<LeafNode<KeyType> *>(root);
       tempRoot->values.push_back(value);
@@ -1271,6 +1300,7 @@ class BPlusTree {
     }
     outputFile << output << std::endl;
     outputFile.close();
+    delete &bPlusTreeS;
     if (outputFile.fail()) {
       std::cerr << "无法关闭文件" << std::endl;
       return;
@@ -1303,6 +1333,8 @@ class BPlusTree {
 
     // 关闭文件
     input_file.close();
+    bp.ParseFromIstream(&input_file);
+
     if (!bp.ParseFromString(file_contents)) {
       std::cout << "反序列化失败" << std::endl;
     };
@@ -1310,6 +1342,7 @@ class BPlusTree {
     std::cout << "反序列化结果： " << bp.root().internal_node().keys(0);
 
     rebuildTree(bp);
+    delete &bp;
   }
 
   void rebuildTree(BPlusTreeS bPlusTreeS) {

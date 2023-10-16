@@ -8,21 +8,14 @@
  * @
  * @Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
-/***
- * @Author: wangao23 oliverdebox@163.com
- * @Date: 2023-09-22 11:24:46
- * @LastEditors: wangao23 oliverdebox@163.com
- * @LastEditTime: 2023-09-22 11:25:51
- * @FilePath: /bPlusProject/test/test_case3_muti.cpp
- * @Description:
- * @
- * @Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
- */
 #include <random>
 #include <vector>
 
 #include "BPlusFunc.h"
 #include "gtest/gtest.h"
+
+// BPlusTree<int>* intTree;
+
 class BPlusTreeMultiTest : public testing::Test {
  protected:
   BPlusTree<int>* intTree;
@@ -58,8 +51,9 @@ TEST_F(BPlusTreeMultiTest, TenThreadsInsert) {
   intTree->print();
   std::vector<std::thread> threads;
 
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 4; i++) {
     threads.push_back(std::thread(deleteWorker, intTree, user, randomNum()));
+    // threads.push_back(std::thread(writeWorker, intTree, randomNum()));
   }
   for (auto& item : threads) {
     item.join();

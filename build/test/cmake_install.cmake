@@ -1,4 +1,4 @@
-# Install script for directory: /home/oliver/Developer/bPlusProject/test
+# Install script for directory: /home/oliver/cplus/training-plan/test
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

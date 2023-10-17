@@ -1,4 +1,4 @@
-# Install script for directory: /home/oliver/Developer/bPlusProject
+# Install script for directory: /home/oliver/cplus/training-plan
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,17 +39,17 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/oliver/Developer/bPlusProject/build/src/cmake_install.cmake")
+  include("/home/oliver/cplus/training-plan/build/src/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/oliver/Developer/bPlusProject/build/test/cmake_install.cmake")
+  include("/home/oliver/cplus/training-plan/build/test/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/oliver/Developer/bPlusProject/build/third/googletest/cmake_install.cmake")
+  include("/home/oliver/cplus/training-plan/build/third/googletest/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -60,5 +60,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/oliver/Developer/bPlusProject/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/oliver/cplus/training-plan/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -1,55 +1,55 @@
 [
 {
-  "directory": "/home/oliver/Developer/bPlusProject/build",
-  "command": "/usr/bin/c++   -I../include    -std=c++17 -pg -g   -o src/CMakeFiles/main.dir/Main.cpp.o -c /home/oliver/Developer/bPlusProject/src/Main.cpp",
-  "file": "/home/oliver/Developer/bPlusProject/src/Main.cpp"
+  "directory": "/home/oliver/cplus/training-plan/build",
+  "command": "/usr/bin/c++   -I../include    -std=c++17 -pg -g   -o src/CMakeFiles/main.dir/Main.cpp.o -c /home/oliver/cplus/training-plan/src/Main.cpp",
+  "file": "/home/oliver/cplus/training-plan/src/Main.cpp"
 },
 
 {
-  "directory": "/home/oliver/Developer/bPlusProject/build",
-  "command": "/usr/bin/c++   -I../include    -std=c++17 -pg -g   -o src/CMakeFiles/main.dir/__/include/BPlusTree.pb.cc.o -c /home/oliver/Developer/bPlusProject/include/BPlusTree.pb.cc",
-  "file": "/home/oliver/Developer/bPlusProject/include/BPlusTree.pb.cc"
+  "directory": "/home/oliver/cplus/training-plan/build",
+  "command": "/usr/bin/c++   -I../include    -std=c++17 -pg -g   -o src/CMakeFiles/main.dir/__/include/BPlusTree.pb.cc.o -c /home/oliver/cplus/training-plan/include/BPlusTree.pb.cc",
+  "file": "/home/oliver/cplus/training-plan/include/BPlusTree.pb.cc"
 },
 
 {
-  "directory": "/home/oliver/Developer/bPlusProject/build",
-  "command": "/usr/bin/c++   -I/usr/local/include/gtest -I../test/../../include/gtest -I../include -isystem ../third/googletest/googletest/include -isystem ../third/googletest/googletest    -std=c++17 -g   -o test/CMakeFiles/test_main3.dir/test_case3_multi.cpp.o -c /home/oliver/Developer/bPlusProject/test/test_case3_multi.cpp",
-  "file": "/home/oliver/Developer/bPlusProject/test/test_case3_multi.cpp"
+  "directory": "/home/oliver/cplus/training-plan/build",
+  "command": "/usr/bin/c++   -I/usr/local/include/gtest -I../test/../../include/gtest -I../include -isystem ../third/googletest/googletest/include -isystem ../third/googletest/googletest    -std=c++17 -g   -o test/CMakeFiles/test_main3.dir/test_case3_multi.cpp.o -c /home/oliver/cplus/training-plan/test/test_case3_multi.cpp",
+  "file": "/home/oliver/cplus/training-plan/test/test_case3_multi.cpp"
 },
 
 {
-  "directory": "/home/oliver/Developer/bPlusProject/build",
-  "command": "/usr/bin/c++   -I/usr/local/include/gtest -I../test/../../include/gtest -I../include -isystem ../third/googletest/googletest/include -isystem ../third/googletest/googletest    -std=c++17 -g   -o test/CMakeFiles/test_main2.dir/test_case2.cpp.o -c /home/oliver/Developer/bPlusProject/test/test_case2.cpp",
-  "file": "/home/oliver/Developer/bPlusProject/test/test_case2.cpp"
+  "directory": "/home/oliver/cplus/training-plan/build",
+  "command": "/usr/bin/c++   -I/usr/local/include/gtest -I../test/../../include/gtest -I../include -isystem ../third/googletest/googletest/include -isystem ../third/googletest/googletest    -std=c++17 -g   -o test/CMakeFiles/test_main2.dir/test_case2.cpp.o -c /home/oliver/cplus/training-plan/test/test_case2.cpp",
+  "file": "/home/oliver/cplus/training-plan/test/test_case2.cpp"
 },
 
 {
-  "directory": "/home/oliver/Developer/bPlusProject/build",
-  "command": "/usr/bin/c++   -I../include -I/usr/local/include/gtest -I../test/../../include/gtest -isystem ../third/googletest/googletest/include -isystem ../third/googletest/googletest    -std=c++17 -g   -o test/CMakeFiles/test_main.dir/test_case1.cpp.o -c /home/oliver/Developer/bPlusProject/test/test_case1.cpp",
-  "file": "/home/oliver/Developer/bPlusProject/test/test_case1.cpp"
+  "directory": "/home/oliver/cplus/training-plan/build",
+  "command": "/usr/bin/c++   -I../include -I/usr/local/include/gtest -I../test/../../include/gtest -isystem ../third/googletest/googletest/include -isystem ../third/googletest/googletest    -std=c++17 -g   -o test/CMakeFiles/test_main.dir/test_case1.cpp.o -c /home/oliver/cplus/training-plan/test/test_case1.cpp",
+  "file": "/home/oliver/cplus/training-plan/test/test_case1.cpp"
 },
 
 {
-  "directory": "/home/oliver/Developer/bPlusProject/build",
-  "command": "/usr/bin/c++   -isystem ../third/googletest/googlemock/include -isystem ../third/googletest/googlemock -isystem ../third/googletest/googletest/include -isystem ../third/googletest/googletest  -g   -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o third/googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o -c /home/oliver/Developer/bPlusProject/third/googletest/googlemock/src/gmock_main.cc",
-  "file": "/home/oliver/Developer/bPlusProject/third/googletest/googlemock/src/gmock_main.cc"
+  "directory": "/home/oliver/cplus/training-plan/build",
+  "command": "/usr/bin/c++   -isystem ../third/googletest/googlemock/include -isystem ../third/googletest/googlemock -isystem ../third/googletest/googletest/include -isystem ../third/googletest/googletest  -g   -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o third/googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o -c /home/oliver/cplus/training-plan/third/googletest/googlemock/src/gmock_main.cc",
+  "file": "/home/oliver/cplus/training-plan/third/googletest/googlemock/src/gmock_main.cc"
 },
 
 {
-  "directory": "/home/oliver/Developer/bPlusProject/build",
-  "command": "/usr/bin/c++   -I../third/googletest/googlemock/include -I../third/googletest/googlemock -isystem ../third/googletest/googletest/include -isystem ../third/googletest/googletest  -g   -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o third/googletest/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o -c /home/oliver/Developer/bPlusProject/third/googletest/googlemock/src/gmock-all.cc",
-  "file": "/home/oliver/Developer/bPlusProject/third/googletest/googlemock/src/gmock-all.cc"
+  "directory": "/home/oliver/cplus/training-plan/build",
+  "command": "/usr/bin/c++   -I../third/googletest/googlemock/include -I../third/googletest/googlemock -isystem ../third/googletest/googletest/include -isystem ../third/googletest/googletest  -g   -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o third/googletest/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o -c /home/oliver/cplus/training-plan/third/googletest/googlemock/src/gmock-all.cc",
+  "file": "/home/oliver/cplus/training-plan/third/googletest/googlemock/src/gmock-all.cc"
 },
 
 {
-  "directory": "/home/oliver/Developer/bPlusProject/build",
-  "command": "/usr/bin/c++   -isystem ../third/googletest/googletest/include -isystem ../third/googletest/googletest  -g   -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o third/googletest/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o -c /home/oliver/Developer/bPlusProject/third/googletest/googletest/src/gtest_main.cc",
-  "file": "/home/oliver/Developer/bPlusProject/third/googletest/googletest/src/gtest_main.cc"
+  "directory": "/home/oliver/cplus/training-plan/build",
+  "command": "/usr/bin/c++   -isystem ../third/googletest/googletest/include -isystem ../third/googletest/googletest  -g   -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o third/googletest/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o -c /home/oliver/cplus/training-plan/third/googletest/googletest/src/gtest_main.cc",
+  "file": "/home/oliver/cplus/training-plan/third/googletest/googletest/src/gtest_main.cc"
 },
 
 {
-  "directory": "/home/oliver/Developer/bPlusProject/build",
-  "command": "/usr/bin/c++   -I../third/googletest/googletest/include -I../third/googletest/googletest  -g   -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o third/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o -c /home/oliver/Developer/bPlusProject/third/googletest/googletest/src/gtest-all.cc",
-  "file": "/home/oliver/Developer/bPlusProject/third/googletest/googletest/src/gtest-all.cc"
+  "directory": "/home/oliver/cplus/training-plan/build",
+  "command": "/usr/bin/c++   -I../third/googletest/googletest/include -I../third/googletest/googletest  -g   -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o third/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o -c /home/oliver/cplus/training-plan/third/googletest/googletest/src/gtest-all.cc",
+  "file": "/home/oliver/cplus/training-plan/third/googletest/googletest/src/gtest-all.cc"
 }
 ]

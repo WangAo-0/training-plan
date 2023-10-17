@@ -1,4 +1,4 @@
-# Install script for directory: /home/oliver/Developer/bPlusProject/third/googletest
+# Install script for directory: /home/oliver/cplus/training-plan/third/googletest
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/oliver/Developer/bPlusProject/build/third/googletest/googlemock/cmake_install.cmake")
+  include("/home/oliver/cplus/training-plan/build/third/googletest/googlemock/cmake_install.cmake")
 
 endif()
 

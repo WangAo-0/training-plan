@@ -1,5 +1,5 @@
 # .vscode/
-# .cache/
-# build/
+.cache/
+build/
 # requirements/
 # scripts/
